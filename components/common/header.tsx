@@ -8,7 +8,7 @@ const Header = ({ children }) => {
           <img src="/oceanumlogo.svg"
             alt="Logo Oceanum"  className="w-10 h-10" />
           <div className="z-0 top-0 fixed pointer-events-none">
-            <CorrectAnswer></CorrectAnswer>
+            {/* <CorrectAnswer></CorrectAnswer> */}
           </div>
         </a>
         <div className="flex justify-center">

@@ -209,9 +209,9 @@ button {
   pointer-events: auto;
   backdrop-filter: blur(0.625rem);
   -webkit-backdrop-filter: blur(0.625rem);
-  > div {
-    @apply flex gap-10 justify-center items-center h-3/4 z-50;
-  }
+  // > div {
+  //   @apply flex gap-10 justify-center items-center z-50;
+  // }
 }
 .progress {
   height: 0.1875rem;

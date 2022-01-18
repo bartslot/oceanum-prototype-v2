@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { LottiePlayer } from 'lottie-web';
 
-const CorrectAnswer = () => {
+const CorrectAnswer = (props) => {
+  const playAnimation = props.playAnimation;
   const ref = useRef<HTMLDivElement>(null);
   const [lottie, setLottie] = useState<LottiePlayer | null>(null);
   
@@ -16,7 +17,7 @@ const CorrectAnswer = () => {
         container: ref.current,
         renderer: 'svg',
         loop: false,
-        autoplay: true,
+        autoplay: false,
         // path to your animation file, place it inside public folder
         path: "./static/correctAnswer.json",
       });

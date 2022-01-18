@@ -1,0 +1,32 @@
+    q1Lesson2TimeBonuspoints
+	q2Lesson2isCorrect
+	q3Lesson2isCorrect
+	q4Lesson2isCorrect
+	q5Lesson2isCorrect
+	
+    q1Lesson3isCorrect
+	q2Lesson3isCorrect
+	q3Lesson3isCorrect
+	q4Lesson3isCorrect
+	q5Lesson3isCorrect
+	
+    q1Lesson4isCorrect
+	q2Lesson4isCorrect
+	q3Lesson4isCorrect
+	q4Lesson4isCorrect
+	q5Lesson4isCorrect
+	
+    
+
+q1Lesson3TimeBonusPoints
+q2Lesson3TimeBonusPoints
+q3Lesson3TimeBonusPoints
+q4Lesson3TimeBonusPoints
+
+
+q1Lesson4TimeBonusPoints
+q2Lesson4TimeBonusPoints
+q3Lesson4TimeBonusPoints
+q4Lesson4TimeBonusPoints
+
+

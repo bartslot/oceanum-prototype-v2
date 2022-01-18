@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, props } from "react";
 // import { findDOMNode } from 'react-dom'
 import ReactPlayer from "../index";
 import Duration from "./Duration";
@@ -6,13 +6,16 @@ import gsap from "gsap";
 import CorrectAnswer from "@/components/common/correct-answer";
 
 class App extends Component {
+  constructor(props) {
+      super(props);
+   }
   state = {
     url: "https://",
     pip: false,
     playing: false,
     controls: false,
     light: false,
-    volume: 0.8,
+    volume: 1,
     muted: false,
     played: 0,
     playingBGAudio: false,
@@ -24,7 +27,7 @@ class App extends Component {
     loop: false,
     question: 0,
     questionTime: false,
-    answerTime: false,
+    answerTime: false, //turn back to false
     correctQuestion: false,
     inCorrectQuestion: false,
     points: 0,
@@ -39,7 +42,7 @@ class App extends Component {
     qTime5: 210, //210
     questionTitle: "Symbiosis",
     qFeedback: null,
-    q0: null,
+    q0: null, // set back to nul
     q1: null,
     q2: null,
     q3: null,
@@ -57,8 +60,10 @@ class App extends Component {
   handleStart = (episode) => {
     console.log("playing episode 1");
     let url;
+
+    // this is loading the video.
     if (episode != 2) {
-      url = "./video/video.mp4";
+      url = "./video/symbiosis.mp4";
     } else {
       url = "https://youtu.be/laksjfdljasdf";
     }
@@ -224,7 +229,7 @@ class App extends Component {
           qFeedback:
             "Clownfish all begin life as male, but can all carry both female and male reproductive organs. In any given community, the female is the largest fish, the breeding male is the second-largest and the rest are sexually immature males. These immature males can turn into females if the alpha female dies.",
           questionTitle: "How did she became the boss?",
-          q0: "She is the boss because she is the oldest",
+          q0: "She is the boss because she is the oldest",  
           q1: "The former male leader died",
         });
         break;
@@ -282,6 +287,7 @@ class App extends Component {
         display: "fixed",
         opacity: 0,
       })
+      // gsap.fromTo('.feedback', { opacity: 0, scale: .3, x: -100}, { duration: 1, scale: 1, x: 100})
       gsap.to("#incorrect", { opacity: 1, duration: 2, delay: 1 })
       gsap.to("#incorrect", { opacity: 0, duration: 1, delay: 10 })
       gsap.set("#incorrect", { visibility: "hidden", delay: 11 })
@@ -296,21 +302,23 @@ class App extends Component {
       this.setState({ points: this.state.points + this.state.pointsAdded }) //Add points
       // this.player.seekTo(parseFloat(e.target.value))
       this.audioBlock2.seekTo(0)
-      gsap.delayedCall(2, this.handleTogglePlayCorrectAudio)
+      gsap.delayedCall(4, this.handleTogglePlayCorrectAudio)
       this.handleToggleCorrectQuestion()
-
       gsap.set("#questionAnswer", { display: "block" })
       gsap.set("#correct", { visibility: "visible", opacity: 0 })
       gsap.to("#correct", { opacity: 1, duration: 2, delay: 1 })
       gsap.to("#correct", { opacity: 0, duration: 1, delay: 4 })
       gsap.set("#correct", { visibility: "hidden", delay: 6 })
-      this.handlePlayPause()
-      gsap.set("#questionAnswer", { display: "none", delay: 8 },
-                                  { opacity: 0, duration: 1, delay: 4 })
-      this.handleToggleQuestionTime()
+      
+      
+      gsap.delayedCall(6, this.handlePlayPause);
+      gsap.delayedCall(6, this.handleToggleQuestionTime);
+      gsap.to("#questionAnswer", { opacity: 0, duration: 1, delay: 4 })
+      gsap.set("#questionAnswer", { opacity: 0, duration: 1, delay: 7 },
+                                  { display: "hidden", delay: 11 })
+                                  
     }
   };
-  
   ref = (player) => {
     this.player = player;
   };
@@ -320,7 +328,6 @@ class App extends Component {
   ref3 = (audioBlock2) => {
     this.audioBlock2 = audioBlock2;
   };
-
   render() {
     const {
       url,
@@ -372,106 +379,101 @@ class App extends Component {
             </h2>
           </div>
         </div>
-        <div
-          id="questionAnswer"
-          className={`${
-            questionTime == true ? "block" : "hidden"} overlay`}
-        >
-          <h2
-            id='questionTitle'
-            className="text-white text-center font-bold text-3xl mt-6 relative z-50 p-8"
-          >
-            {questionTitle}
-          </h2>
-          <div
-            className={`${
-              Math.floor(Math.random() * 2) == 1
-                ? 'flex-col-reverse md:flex-row-reverse'
-                : 'flex-col md:flex-row'
-            }`}
-          >
-            <button
-              className={`${
-                q0 != null ? 'block' : 'hidden'
-              } py-2 question question0 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                md:text-xl tracking-wide duration-300 z-50 link`}
-              onClick={() => this.answerQuestion(true)}
-            >
-              {q0}
-            </button>
-            <button
-              className={`${
-                q1 != null ? "block" : "hidden"
-              } py-2 question question1 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                md:text-xl tracking-wide duration-300 z-50 link`}
-              onClick={() => this.answerQuestion(false)}
-            >
-              {q1}
-            </button>
-            <button
-              className={`${
-                q2 != null ? "block" : "hidden"
-              } py-2 question question2 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                md:text-xl tracking-wide duration-300 z-50 link`}
-              onClick={() => this.answerQuestion(false)}
-            >
-              {q2}
-            </button>
-            <button
-              className={`${
-                q3 != null ? "block" : "hidden"
-              } py-2 question question3 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                md:text-xl tracking-wide duration-300 z-50 link`}
-              onClick={() => this.answerQuestion(false)}
-            >
-              {q3}
-            </button>
-            <button
-              className={`${
-                q4 != null ? "block" : "hidden"
-              } py-2 question question4 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                md:text-xl tracking-wide duration-300 z-50 link`}
-              onClick={() => this.answerQuestion(false)}
-            >
-              {q4}
-            </button>
-            <button
-              className={`${
-                q5 != null ? "block" : "hidden"
-              } py-2 question question5 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                md:text-xl tracking-wide duration-300 z-50 link`}
-              onClick={() => this.answerQuestion(false)}
-            >
-              {q5}
-            </button>
-          </div>
-        </div>
-        <div className={`${answerTime ? "fixed" : "hidden"} absolute overlay`}>
-          <div
-            id="correct"
-            className="invisible pointer-events-none fixed overlay"
-          >
-            <div>
-              <h2 className="text-white animate-pulse text-5xl">
-                You are correct 🐠🐠
+        {/* QuestionTime */}
+        {questionTime && 
+        <div id="questionTime" className={`${questionTime ? "fixed" : "hidden"} fixed overlay justify-center flex items-center`}>
+          <div className="flex-col w-screen h-1/2 flex items-center justify-center">
+              {/* Title */}
+              <h2 id='questionTitle' className="text-white text-center font-bold text-3xl mb-20 relative z-50 p-8" >
+                {questionTitle}
               </h2>
-              <h3 className="text-3xl text-white center mt-5 animate-pulse">
-                +<span className="points">{pointsAdded}</span> points
-              </h3>
+            {/* Answers */}
+            <div className={`${ Math.floor(Math.random() * 2) == 1 ? 'flex-col-reverse md:flex-row-reverse' : 'flex-col md:flex-row' } flex gap-8`} >
+              <button
+                className={`${
+                  q0 != null ? 'block' : 'hidden'
+                } py-2 question question0 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
+                  md:text-xl tracking-wide duration-300 z-50 link`}
+                onClick={() => this.answerQuestion(true)}
+              >
+                {q0}
+              </button>
+              <button
+                className={`${
+                  q1 != null ? "block" : "hidden"
+                } py-2 question question1 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
+                  md:text-xl tracking-wide duration-300 z-50 link`}
+                onClick={() => this.answerQuestion(false)}
+              >
+                {q1}
+              </button>
+              <button
+                className={`${
+                  q2 != null ? "block" : "hidden"
+                } py-2 question question2 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
+                  md:text-xl tracking-wide duration-300 z-50 link`}
+                onClick={() => this.answerQuestion(false)}
+              >
+                {q2}
+              </button>
+              <button
+                className={`${
+                  q3 != null ? "block" : "hidden"
+                } py-2 question question3 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
+                  md:text-xl tracking-wide duration-300 z-50 link`}
+                onClick={() => this.answerQuestion(false)}
+              >
+                {q3}
+              </button>
+              <button
+                className={`${
+                  q4 != null ? "block" : "hidden"
+                } py-2 question question4 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
+                  md:text-xl tracking-wide duration-300 z-50 link`}
+                onClick={() => this.answerQuestion(false)}
+              >
+                {q4}
+              </button>
+              <button
+                className={`${
+                  q5 != null ? "block" : "hidden"
+                } py-2 question question5 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
+                  md:text-xl tracking-wide duration-300 z-50 link`}
+                onClick={() => this.answerQuestion(false)}
+              >
+                {q5}
+              </button>
             </div>
           </div>
-          <div
-            id="incorrect"
-            className="invisible pointer-events-none fixed overlay"
-          >
-            <div className="flex-col">
-              <h2 className="text-white animate-pulse text-5xl">
-                Oops! not correct
-              </h2>
-              <p className="text-white w-96 mt-9">{qFeedback}</p>
+          </div>}
+        {/* Answer Time */}
+        {answerTime && 
+        <div id="questionAnswer" className={`${answerTime ? "fixed" : "hidden"} fixed overlay justify-center flex items-center`}>
+          <div className="flex-col w-full flex items-center relative">
+            <div id="correct" className="invisible pointer-events-none">
+              <div className="">
+                <div className="w-3/4 z-0 absolute left-0 top-0"><CorrectAnswer play={correctQuestion}></CorrectAnswer></div>
+                <h2 className="feedback text-white animate-pulse text-7xl">
+                  You are correct 🐠🐠
+                </h2>
+                <h3 className="text-3xl text-white center mt-5 animate-pulse">
+                  +<span className="points">{pointsAdded}</span> points
+                </h3>
+                <p className="text-white w-96 mt-9">{qFeedback}</p>
+              </div>
+            </div>
+            <div id="incorrect"
+              className="invisible pointer-events-none fixed"
+            >
+              <div className="flex-col">
+                <h2 className="feedback text-white animate-pulse text-5xl">
+                  Oops! not correct
+                </h2>
+                <p className="text-white w-96 mt-9">{qFeedback}</p>
+              </div>
             </div>
           </div>
-        </div>
+        </div> }
         <div className="">
           <h1
             className={`${
@@ -486,7 +488,7 @@ class App extends Component {
             In this small quiz a team of Clownfish will have to work together
             with a Sea Anemone for their survival.
             <br />
-            Become the master of Symbiosis by answering the correct questions.
+            The questions will test your <strong>intuïtion</strong>. It's ok if you don't know the answer. You'll get it next time.
           </p>
           <div className={`${started ? "hidden" : "block"} mt-20 flex-1`}>
             <a onClick={() => this.handleStart(1)} className="link">
@@ -500,7 +502,7 @@ class App extends Component {
             </a>
           </div>
           {/* When the thing ends */}
-          <div className={`${ended ? "hidden" : "block"} mt-20 flex-1`}>
+          <div className={`${ended ? "hidden" : "block"} mt-20 flex-1 overlay`}>
             <h1 className="text-white text-center font-bold text-5xl relative z-50 mt-20">
               Completed Symbiosis
             </h1>
@@ -746,7 +748,7 @@ class App extends Component {
           loop={true}
           controls={false}
           className="hidden"
-          volume={0.5}
+          volume={0.3}
         />
         <ReactPlayer
           url="./audio/correct.wav"
