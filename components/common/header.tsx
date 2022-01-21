@@ -1,5 +1,3 @@
-import CorrectAnswer from "@/components/common/correct-answer";
-
 const Header = ({ children }) => {
   return (
     <nav className="w-full fixed top-0 py-8 select-none z-50 bg-gradient-to-b from-gray-900 bg-opacity-30 to-transparent">
@@ -7,9 +5,6 @@ const Header = ({ children }) => {
         <a href="#home" className="link">
           <img src="/oceanumlogo.svg"
             alt="Logo Oceanum"  className="w-10 h-10" />
-          <div className="z-0 top-0 fixed pointer-events-none">
-            {/* <CorrectAnswer></CorrectAnswer> */}
-          </div>
         </a>
         <div className="flex justify-center">
             <img

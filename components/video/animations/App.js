@@ -8,12 +8,12 @@ import CorrectAnswer from "@/components/common/correct-answer";
 class App extends Component {
   constructor(props) {
       super(props);
-   }
+  }
   state = {
     url: "https://",
     pip: false,
     playing: false,
-    controls: false,
+    controls: true,
     light: false,
     volume: 1,
     muted: false,
@@ -27,24 +27,32 @@ class App extends Component {
     loop: false,
     question: 0,
     questionTime: false,
-    answerTime: false, //turn back to false
-    correctQuestion: false,
+    answerTime: true, //turn back to false
+    correctQuestion: true,
     inCorrectQuestion: false,
     points: 0,
     pointsAdded: 80,
     started: false,
-    ended: true,
+    ended: false,
     playAudioClip: false,
     qTime1: 1, //32
     qTime2: 74, //74
     qTime3: 149,
     qTime4: 196,
     qTime5: 210, //210
+    lessonTitle: "Symbiosis",
+    lessonInfo: ' Symbiosis is the connection between different species.' +
+                  '<br />' +
+                  'In this small quiz a team of Clownfish will have to work together' +
+                  'with a Sea Anemone for their survival.' +
+                  '<br />'+
+                  'The questions will test your <strong>intuïtion</strong>. It\'s ok if you don\'t know the answer. You\'ll get it next time.',
     questionTitle: "Symbiosis",
-    qFeedback: null,
-    q0: null, // set back to nul
-    q1: null,
-    q2: null,
+    qInfo: 'If you look at the blblablabla the blbalblabal',
+    qFeedback: 'The anemone does sting the Clownfish. However the clownfishes skin contains a mucus, a slim film that protects the Clownfish from the poison of the Anemone',
+    q0: 'Correct', // set back to nul
+    q1: 'False',
+    q2: 'False',
     q3: null,
     q4: null,
     q5: null,
@@ -270,16 +278,11 @@ class App extends Component {
     }
   };
   answerQuestion = (q) => {
+    this.handleToggleAnswerTime()
     gsap.to("#question", { opacity: 0, scale: 1.1, duration: 1 })
-    this.toggleAnswerTime
     // this.handleToggleMuted()
     if (!q) {
-      // switch(this.state.question) {
-      //   case 1: this.player.seekTo(this.state.qTime1)
-      //   case 2: this.player.seekTo(this.state.qTime2)
-      //   case 3: this.player.seekTo(this.state.qTime3)
-      //   case 4: this.player.seekTo(this.state.qTime4)
-      // }
+      // Not correct answer
       this.handleToggleInCorrectQuestion()
       gsap.set("#questionAnswer", { display: "block" })
       gsap.set("#incorrect", {
@@ -291,16 +294,13 @@ class App extends Component {
       gsap.to("#incorrect", { opacity: 1, duration: 2, delay: 1 })
       gsap.to("#incorrect", { opacity: 0, duration: 1, delay: 10 })
       gsap.set("#incorrect", { visibility: "hidden", delay: 11 })
-      // // Not correct answer
+      
       gsap.delayedCall(10, this.handlePlayPause)
-      gsap.delayedCall(11, this.handleToggleQuestionTime)
+      gsap.delayedCall(11, this.handleToggleQuestionTime, this.handleToggleAnswerTime)
       gsap.set("#questionAnswer", { display: "hidden" })
     } else {
       // Correct Answer
-      // let tl = gsap.timeline()
-      // tl.counter(".points", {end:this.state.points + this.state.pointsAdded, ease:"linear"}, "-=0.5")
       this.setState({ points: this.state.points + this.state.pointsAdded }) //Add points
-      // this.player.seekTo(parseFloat(e.target.value))
       this.audioBlock2.seekTo(0)
       gsap.delayedCall(4, this.handleTogglePlayCorrectAudio)
       this.handleToggleCorrectQuestion()
@@ -312,7 +312,7 @@ class App extends Component {
       
       
       gsap.delayedCall(6, this.handlePlayPause);
-      gsap.delayedCall(6, this.handleToggleQuestionTime);
+      gsap.delayedCall(6, this.handleToggleQuestionTime, this.handleToggleAnswerTime);
       gsap.to("#questionAnswer", { opacity: 0, duration: 1, delay: 4 })
       gsap.set("#questionAnswer", { opacity: 0, duration: 1, delay: 7 },
                                   { display: "hidden", delay: 11 })
@@ -333,6 +333,7 @@ class App extends Component {
       url,
       playAudioClip,
       qFeedback,
+      qInfo,
       playingBGAudio,
       playingCorrectAudio,
       ended,
@@ -349,7 +350,9 @@ class App extends Component {
       pip,
       questionTime,
       answerTime,
+      correctQuestion,
       questionTitle,
+      lessonTitle,
       points,
       pointsAdded,
       question,
@@ -381,90 +384,50 @@ class App extends Component {
         </div>
         {/* QuestionTime */}
         {questionTime && 
-        <div id="questionTime" className={`${questionTime ? "fixed" : "hidden"} fixed overlay justify-center flex items-center`}>
+          <div id="questionTime" className='fixed overlay justify-center flex items-center'>
           <div className="flex-col w-screen h-1/2 flex items-center justify-center">
               {/* Title */}
-              <h2 id='questionTitle' className="text-white text-center font-bold text-3xl mb-20 relative z-50 p-8" >
+              <h2 id='questionTitle' className="text-white text-center font-bold text-4xl relative z-50 p-4" >
                 {questionTitle}
               </h2>
+              <p className='mb-20'>{qInfo}</p>
             {/* Answers */}
             <div className={`${ Math.floor(Math.random() * 2) == 1 ? 'flex-col-reverse md:flex-row-reverse' : 'flex-col md:flex-row' } flex gap-8`} >
-              <button
-                className={`${
-                  q0 != null ? 'block' : 'hidden'
-                } py-2 question question0 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                  md:text-xl tracking-wide duration-300 z-50 link`}
-                onClick={() => this.answerQuestion(true)}
-              >
-                {q0}
-              </button>
-              <button
-                className={`${
-                  q1 != null ? "block" : "hidden"
-                } py-2 question question1 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                  md:text-xl tracking-wide duration-300 z-50 link`}
-                onClick={() => this.answerQuestion(false)}
-              >
-                {q1}
-              </button>
-              <button
-                className={`${
-                  q2 != null ? "block" : "hidden"
-                } py-2 question question2 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                  md:text-xl tracking-wide duration-300 z-50 link`}
-                onClick={() => this.answerQuestion(false)}
-              >
-                {q2}
-              </button>
-              <button
-                className={`${
-                  q3 != null ? "block" : "hidden"
-                } py-2 question question3 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                  md:text-xl tracking-wide duration-300 z-50 link`}
-                onClick={() => this.answerQuestion(false)}
-              >
-                {q3}
-              </button>
-              <button
-                className={`${
-                  q4 != null ? "block" : "hidden"
-                } py-2 question question4 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                  md:text-xl tracking-wide duration-300 z-50 link`}
-                onClick={() => this.answerQuestion(false)}
-              >
-                {q4}
-              </button>
-              <button
-                className={`${
-                  q5 != null ? "block" : "hidden"
-                } py-2 question question5 px-7 font-medium border-2 border-white background-white rounded-md text-base w-fit
-                  md:text-xl tracking-wide duration-300 z-50 link`}
-                onClick={() => this.answerQuestion(false)}
-              >
-                {q5}
-              </button>
+              {q0 && <button className='question link' onClick={() => this.answerQuestion(true)}>{q0}</button> }
+              {q1 && <button className='question link' onClick={() => this.answerQuestion(false)}>{q1}</button> }
+              {q2 && <button className='question link' onClick={() => this.answerQuestion(false)}>{q2}</button> }
+              {q3 && <button className='question link' onClick={() => this.answerQuestion(false)}>{q3}</button> }
+              {q4 && <button className='question link' onClick={() => this.answerQuestion(false)}>{q4}</button> }
+              {q5 && <button className='question link' onClick={() => this.answerQuestion(false)}>{q5}</button> }
             </div>
           </div>
-          </div>}
+          </div>
+        }
         {/* Answer Time */}
         {answerTime && 
-        <div id="questionAnswer" className={`${answerTime ? "fixed" : "hidden"} fixed overlay justify-center flex items-center`}>
-          <div className="flex-col w-full flex items-center relative">
-            <div id="correct" className="invisible pointer-events-none">
+          <div id="questionAnswer" className='fixed overlay justify-center flex items-center'>
+          {correctQuestion &&  
+          <div className="section-container absolute h-screen top-0">
+            <div className="z-0 left-0 top-0"><CorrectAnswer playAnimation={2}></CorrectAnswer></div></div>
+          }
+          <div className="flex-col section-container flex items-center">
+            {correctQuestion && 
+            <div id="correct" className="pointer-events-none">
               <div className="">
-                <div className="w-3/4 z-0 absolute left-0 top-0"><CorrectAnswer play={correctQuestion}></CorrectAnswer></div>
-                <h2 className="feedback text-white animate-pulse text-7xl">
+                
+                <h2 className="feedback text-white animate-pulse text-5xl">
                   You are correct 🐠🐠
                 </h2>
                 <h3 className="text-3xl text-white center mt-5 animate-pulse">
                   +<span className="points">{pointsAdded}</span> points
                 </h3>
-                <p className="text-white w-96 mt-9">{qFeedback}</p>
+                <p className="text-white m-auto w-96 mt-9">{qFeedback}</p>
               </div>
-            </div>
+            </div> 
+            }
+            {!correctQuestion && 
             <div id="incorrect"
-              className="invisible pointer-events-none fixed"
-            >
+              className="invisible pointer-events-none fixed">
               <div className="flex-col">
                 <h2 className="feedback text-white animate-pulse text-5xl">
                   Oops! not correct
@@ -472,17 +435,15 @@ class App extends Component {
                 <p className="text-white w-96 mt-9">{qFeedback}</p>
               </div>
             </div>
+            }
           </div>
-        </div> }
+          
+          </div> 
+        }
+        {!started && 
         <div className="">
-          <h1
-            className={`${
-              started ? "hidden" : "block"
-            } text-white text-center font-bold text-5xl z-50`}
-          >
-            Symbiosis
-          </h1>
-          <p className={`${started ? "hidden" : "block"} mt-9`}>
+          <h1 className={`text-white text-center font-bold text-5xl z-50`}>{lessonTitle}</h1>
+          <p className={`mt-9`}>
             Symbiosis is the connection between different species.
             <br />
             In this small quiz a team of Clownfish will have to work together
@@ -490,7 +451,7 @@ class App extends Component {
             <br />
             The questions will test your <strong>intuïtion</strong>. It's ok if you don't know the answer. You'll get it next time.
           </p>
-          <div className={`${started ? "hidden" : "block"} mt-20 flex-1`}>
+          <div className={`mt-20 flex-1`}>
             <a onClick={() => this.handleStart(1)} className="link">
               <button
                 className="py-2 px-7 font-medium border-2 uppercase border-white bg-white rounded-md text-base text-black
@@ -501,9 +462,13 @@ class App extends Component {
               </button>
             </a>
           </div>
-          {/* When the thing ends */}
-          <div className={`${ended ? "hidden" : "block"} mt-20 flex-1 overlay`}>
-            <h1 className="text-white text-center font-bold text-5xl relative z-50 mt-20">
+        </div>
+        }
+        
+        {ended && 
+        <div className='fixed overlay justify-center flex items-center'>
+          <div className="flex-col w-screen h-1/2 flex items-center justify-center">
+            <h1 className="text-white text-center font-bold text-5xl relative z-50">
               Completed Symbiosis
             </h1>
             <h2 className="text-white mt-8 text-3xl">With a total of</h2>
@@ -512,8 +477,7 @@ class App extends Component {
             </h2>
             <span className="text-base mb-20 uppercase">points</span>
             <p className="my-9">
-              To enhance the experience I would love your feedback. Please share
-              ❤️️.
+              To enhance the experience I would love your feedback. Please share ❤️️.
             </p>
             <a
               href={"https://forms.gle/PPLoJFJanmvxTFeBA"}
@@ -529,8 +493,9 @@ class App extends Component {
               </button>
             </a>
           </div>
-          {/* <p className="text-white">{playedSeconds}</p> */}
-        </div>
+          </div>
+        }
+        
 
         <div className="hidden">
           <table>
@@ -710,7 +675,9 @@ class App extends Component {
             </tbody>
           </table>
         </div>
+        
         <div className="player-wrapper absolute pointer-events-none h-screen w-screen -z-1 left-0 top-0">
+        {playing &&
           <ReactPlayer
             ref={this.ref}
             className="react-player"
@@ -740,7 +707,7 @@ class App extends Component {
             onDuration={this.handleDuration}
             resizeMode="cover"
           />
-                  {/* AUDIO */}
+          }
         <ReactPlayer
           ref={this.ref3}
           url="./audio/ambient.wav"
@@ -757,7 +724,7 @@ class App extends Component {
           loop={false}
           controls={false}
           className="hidden"
-          volume={1}
+          volume={.4}
         />
         <ReactPlayer
           ref={this.ref2}
@@ -769,6 +736,7 @@ class App extends Component {
           className="hidden"
         />
         </div>
+      
       </div>
     );
   }
