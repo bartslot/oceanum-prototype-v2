@@ -577,6 +577,13 @@
   resolved "https://registry.yarnpkg.com/@jsdevtools/ono/-/ono-7.1.3.tgz#9df03bbd7c696a5c58885c34aa06da41c8543796"
   integrity sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==
 
+"@lottiefiles/lottie-interactivity@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@lottiefiles/lottie-interactivity/-/lottie-interactivity-1.3.2.tgz#f2f5586217755860e58e1fdc5d375f27da70993e"
+  integrity sha512-iS5HxxQnUDEoL89pvwMBggTndet03p3wtIeOkeX+BJYr8pWwD8JyBYSH6zpAz66rigEmVZFG73gYvQrVnHZlNw==
+  dependencies:
+    core-js "3"
+
 "@napi-rs/triples@1.0.3":
   version "1.0.3"
   resolved "https://registry.npmjs.org/@napi-rs/triples/-/triples-1.0.3.tgz"
@@ -2082,6 +2089,11 @@ cookie@0.4.1:
 core-js-pure@^3.16.0:
   version "3.16.4"
   resolved "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.16.4.tgz"
+
+core-js@3:
+  version "3.20.3"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.20.3.tgz#c710d0a676e684522f3db4ee84e5e18a9d11d69a"
+  integrity sha512-vVl8j8ph6tRS3B8qir40H7yw7voy17xL0piAjlbBUsH7WIfzoedL/ZOr1OV9FyZQLWXsayOJyV4tnRyXR85/ag==
 
 core-js@3.6.5:
   version "3.6.5"
@@ -4886,6 +4898,13 @@ loose-envify@^1.1.0, loose-envify@^1.4.0:
   resolved "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz"
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
+
+lottie-react@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/lottie-react/-/lottie-react-2.2.1.tgz#27fbb85a11000557d7166c36a630fe1e5ce07028"
+  integrity sha512-lAdIUw+zeHLX3gtyLkisa4QM9NkTUUeZTsEL53laBEsjIH4JibgwkioZuza8CtwZ7/cpPZRbCRXWKfiuaDZWww==
+  dependencies:
+    lottie-web "^5.8.1"
 
 lottie-web@^5.8.1:
   version "5.8.1"

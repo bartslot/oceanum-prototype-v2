@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { MENULINKS } from "../../constants";
+import gsap from "gsap";
 
 const Menu = () => {
   useEffect(() => {
@@ -9,8 +10,9 @@ const Menu = () => {
         const checkbox: HTMLInputElement =
           document.querySelector(".checkbox-toggle");
         checkbox.checked = false;
+        gsap.fromTo(".credits", { autoAlpha: 0 }, { autoAlpha: 1, duration: 6 });
       });
-    });
+    });  
   }, []);
 
   return (
@@ -19,7 +21,7 @@ const Menu = () => {
       style={{ visibility: "hidden" }}
     >
       <div className="flex-none overflow-hidden flex items-center justify-center">
-        <div className="text-center opacity-0 overflow-y-auto flex flex-none justify-center items-center max-h-screen">
+        <div className="text-center opacity-0 overflow-y-auto flex flex-col justify-center items-center max-h-screen">
             
           <ul className="list-none py-4 px-0 m-0 block max-h-screen">
             {MENULINKS.map((el) => (
@@ -33,8 +35,10 @@ const Menu = () => {
               </li>
             ))}
           </ul>
-          <div className="absolute bottom-5 left-10 block"><p>
-            Video: Taryn Elliott via Pexels | BBC Life | Sound: </p></div>
+          <div className="flex-col credits gap-10 opacity-70 hover:opacity-100 mt-20">
+            <h2 className="text-xl credits mb-4">Credits</h2>
+            <span>
+            Video: Taryn Elliott via Pexels |</span> <span> BBC Life | </span> <span> Sound: <a className="white no-underline" href="https://www.cinjee.com/">Marijn Cinjee</a> </span></div>
         </div>
       </div>
     </div>

@@ -1,11 +1,12 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import type { LottiePlayer } from 'lottie-web';
+import Lottie from 'lottie-react';
 import { gsap, Linear } from 'gsap';
-
-const CorrectAnswer = (props) => {  
+import animationPath from '../../public/static/starIncrease.json';
+const Star = (props) => {
+  
   gsap.config({ nullTargetWarn: false });
   const ref: MutableRefObject<HTMLDivElement> = useRef(null);
-  const [lottie, setLottie] = useState<LottiePlayer | null>(null);
+  const [lottie, setLottie] = useState<typeof Lottie | null>(null);
   
   var animationNr = props.playAnimation;
   var playAnimation = props.playAnimation;
@@ -13,7 +14,7 @@ const CorrectAnswer = (props) => {
 
   // gsap.staggerFromTo('.animation2', { opacity: 0, scale: 0.01, xPercent:0,}, { opacity: 1, duration: 1, scale: 0.05, xPercent:-100}, "+=2");
   switch (props.playAnimation) {
-    case 1: playAnimation = './static/correctAnswer.json';
+    case 1: playAnimation = './static/starIncrease.json';
             animationDelay = 1;
       break;
     case 2: playAnimation = './static/correctAnswer1.json';
@@ -21,10 +22,6 @@ const CorrectAnswer = (props) => {
       break;
     default: playAnimation = '';
   }
-  useEffect(() => {
-    import('lottie-web').then((Lottie) => setLottie(Lottie.default));
-  }, []);
-
   useEffect(() => {
     // const timeline = gsap.timeline({
     //   defaults: { ease: Linear.easeNone, duration: 0.1 },
@@ -60,12 +57,9 @@ const CorrectAnswer = (props) => {
     }
   }, [lottie, ref]);
 
-  return (
-    <div>
-      <div data-delay={animationDelay} className={`animation${animationNr}`} ref={ref}></div>
-      {/* <div data-delay={animationDelay +.1} className={`animation${animationNr}`} ref={ref}></div>
-      <div data-delay={animationDelay +.2} className={`animation${animationNr}`} ref={ref}></div> */}
-    </div>
-  );
+  return <Lottie lottieRef={lottieRef} animationData={groovyWalkAnimation} />;
+
+
 };
-export default CorrectAnswer;
+
+export default Star;
