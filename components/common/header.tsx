@@ -1,12 +1,10 @@
-import Star from '../animatedUI/star';
+import Logo from './logo';
 
-const Header = ({ children }) => {
+const Header = ({ children }, props) => {
   return (
-    <nav className="w-full fixed left-0 top-0 py-8 select-none z-50 bg-gradient-to-b from-gray-900 bg-opacity-30 to-transparent">
+    <nav className="w-full fixed left-0 top-0 py-8 select-none z-50">
       <div className="flex justify-between section-container">
-        <div className="flex gap-1 justify-center">
-          <Star playAnimation={1} />
-        </div>
+        <div></div><Logo />
 
         <div className="outer-menu relative">
           <input

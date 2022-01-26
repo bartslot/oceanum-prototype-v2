@@ -7,45 +7,39 @@ const CorrectAnswer = (props) => {
   const ref: MutableRefObject<HTMLDivElement> = useRef(null);
   const [lottie, setLottie] = useState<LottiePlayer | null>(null);
   
-  var animationNr = props.playAnimation;
-  var playAnimation = props.playAnimation;
+  var animationNr = '';
+  // let playAnimation = 1;
   var animationDelay = props.animationDelay;
 
   // gsap.staggerFromTo('.animation2', { opacity: 0, scale: 0.01, xPercent:0,}, { opacity: 1, duration: 1, scale: 0.05, xPercent:-100}, "+=2");
+  // switch (props.playAnimation) {
+  //   case 1: playAnimation = './static/correctAnswer.json';
+  //           animationDelay = 1;
+  //     break;
+  //   case 2: playAnimation = './static/correctAnswer1.json';
+  //           animationDelay = 1.4;
+  //     break;
+  //   default: playAnimation = './static/correctAnswer.json';
+  // }
+  // switch (playAnimation) {
   switch (props.playAnimation) {
-    case 1: playAnimation = './static/correctAnswer.json';
-            animationDelay = 1;
+    case 1: animationNr = './static/correctAnswer1_0.json';
       break;
-    case 2: playAnimation = './static/correctAnswer1.json';
-            animationDelay = 1.4;
+    case 2: animationNr = './static/correctAnswer1_1.json';
       break;
-    default: playAnimation = '';
+    case 3: animationNr = './static/correctAnswer1_2.json';
+      break;
+    case 4: animationNr = './static/correctAnswer1_3.json';
+      break;
+    case 5: animationNr = './static/correctAnswer1_4.json';
+      break;
+    default: animationNr = './static/correctAnswer1_0.json';
   }
   useEffect(() => {
     import('lottie-web').then((Lottie) => setLottie(Lottie.default));
   }, []);
 
   useEffect(() => {
-    // const timeline = gsap.timeline({
-    //   defaults: { ease: Linear.easeNone, duration: 0.1 },
-    // });
-    // timeline
-    //   .set(
-    //     '.animation2', 
-    //     { width:'30px', height:'20px', xPercent:-0, left:"50%", yPercent:-50, top:"50%", position: "absolute" }
-    //   )
-    //   .fromTo(
-    //     '.animation2',
-    //     { opacity: 1, scale:1 },
-    //     { opacity: .2, scale:2 }
-    //   )
-    //   .to(".animation2", {
-    //     opacity: 1,
-    //     scale: 3,
-    //     delay: animationDelay,
-    //     left:"0%",
-    //     top:"50%"
-    //   });
     if (lottie && ref.current) {
       const animation = lottie.loadAnimation({
         container: ref.current,
@@ -53,7 +47,7 @@ const CorrectAnswer = (props) => {
         loop: false,
         autoplay: true,
         // path to your animation file, place it inside public folder
-        path: playAnimation,
+        path: animationNr,
       });
 
       return () => animation.destroy();

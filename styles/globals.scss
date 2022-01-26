@@ -274,3 +274,21 @@ p {
 .faded {
   color: rgba(0, 0, 0, .5);
 }
+.overview {
+  background: url('/static/images/Overview1x.jpg');
+  background-size: cover;
+}
+#Symbiosis:hover #HOVER {
+  fill-opacity: 100;
+  -webkit-transition: fill-opacity 1s;
+  transition: fill-opacity 1s;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+#SymbiosisSVG {
+  top: 50%;
+  position: absolute;
+  transform: translateY(-250px)
+}
+#PlayButton {
+  @apply shadow-sm;
+}
